@@ -78,3 +78,16 @@ export const fmt = (n: number) =>
     style: 'currency',
     currency: 'EUR',
   }).format(n)
+
+export const getActivePromos = (): Record<string, number> => {
+  if (typeof window === 'undefined')
+    return { WELCOME30: 30, KUSH10: 10, CANNAZEN20: 20 }
+  const saved = localStorage.getItem('cz_admin_config')
+  if (saved) {
+    try {
+      const config = JSON.parse(saved)
+      if (config.promoCodes) return config.promoCodes
+    } catch {}
+  }
+  return { WELCOME30: 30, KUSH10: 10, CANNAZEN20: 20 }
+}

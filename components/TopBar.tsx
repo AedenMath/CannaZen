@@ -1,10 +1,20 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function TopBar() {
   const [paused, setPaused] = useState(false)
-  const msg =
+  const [msg, setMsg] = useState(
     '🚚 Livraison gratuite dès 49€   •   ✅ 100% Légal France   •   ⚡ Magic Farmers exclusivité   •   🌿 THC < 0,3% certifié   •   💳 CB · Virement · Bitcoin   •   🎁 Code WELCOME30 = -30%   •   📦 Expédié sous 24/48h   •   🔬 Certifié laboratoire'
+  )
+  useEffect(() => {
+    const saved = localStorage.getItem('cz_admin_config')
+    if (saved) {
+      try {
+        const config = JSON.parse(saved)
+        if (config.announcementText) setMsg(config.announcementText)
+      } catch {}
+    }
+  }, [])
   return (
     <div
       className="h-10 flex items-center overflow-hidden relative"

@@ -5,14 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Minus, Plus, Trash2, CreditCard, Building2, Bitcoin } from 'lucide-react'
-import { useCart, fmt } from '@/lib/cart'
+import { useCart, fmt, getActivePromos } from '@/lib/cart'
 import { toast } from 'sonner'
-
-const PROMO_CODES: Record<string, number> = {
-  WELCOME30: 30,
-  KUSH10: 10,
-  CANNAZEN20: 20,
-}
 
 const SHIPPING_OPTIONS = [
   { id: 'standard', label: 'Colissimo standard', price: 5.9, delay: '2-3 jours' },
@@ -40,9 +34,10 @@ export default function PanierPage() {
 
   const applyPromo = () => {
     const upper = promoCode.toUpperCase().trim()
-    if (PROMO_CODES[upper]) {
-      setAppliedPromo({ code: upper, discount: PROMO_CODES[upper] })
-      toast.success(`Code ${upper} appliqué ! -${PROMO_CODES[upper]}%`)
+    const codes = getActivePromos()
+    if (codes[upper]) {
+      setAppliedPromo({ code: upper, discount: codes[upper] })
+      toast.success(`Code ${upper} appliqué ! -${codes[upper]}%`)
     } else {
       toast.error('Code promo invalide')
     }
